@@ -1,0 +1,122 @@
+buildscript {
+	ext {
+		springBootVersion = '1.5.3.RELEASE'
+        ext.kotlin_version = '1.1.2-2'
+    }
+	repositories {
+		mavenCentral()
+        jcenter()
+	}
+	dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'kotlin'
+apply plugin: 'org.springframework.boot'
+
+group = 'de.roamingthings.auth'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.8
+
+ext["thymeleaf.version"] = "3.0.6.RELEASE"
+ext["thymeleaf-layout-dialect.version"] = "2.2.1"
+ext["docker.registry"] = 'localhost:5000'
+
+jar {
+    archiveName = 'expenses-mono.jar'
+}
+
+repositories {
+	mavenCentral()
+}
+
+sourceSets {
+    integrationTest {
+        java {
+            compileClasspath += main.output + test.output
+            runtimeClasspath += main.output + test.output
+            srcDir file('src/integration-test/java')
+        }
+        resources.srcDir file('src/integration-test/resources')
+    }
+/*
+    // This is just to trick IntelliJ IDEA to add integration test
+    // resources to classpath when running integration tests from
+    // the IDE. It's is not a good solution but I don't know about
+    // a better one.
+    test {
+        resources.srcDir file('src/integration-test/resources')
+    }
+*/
+}
+
+configurations {
+    integrationTestCompile.extendsFrom testCompile
+    integrationTestRuntime.extendsFrom testRuntime
+}
+
+dependencies {
+    compile('org.springframework.boot:spring-boot-starter-web')
+    compile("org.springframework.boot:spring-boot-starter-security")
+    compile("org.springframework.security.oauth:spring-security-oauth2")
+    compile("org.springframework.security:spring-security-jwt")
+    compile("org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version") // Required
+
+    compile('org.springframework.boot:spring-boot-starter-data-jpa')
+    compile('org.springframework.boot:spring-boot-starter-jdbc')
+    compile('org.springframework.boot:spring-boot-starter-validation')
+
+    compile('org.springframework.boot:spring-boot-starter-data-rest')
+    compile('org.springframework.boot:spring-boot-starter-jersey')
+    compile('com.fasterxml.jackson.datatype:jackson-datatype-jsr310')
+
+    compile('org.springframework.boot:spring-boot-starter-thymeleaf')
+	compile('org.thymeleaf.extras:thymeleaf-extras-java8time:3.0.0.RELEASE')
+	compile('org.thymeleaf.extras:thymeleaf-extras-springsecurity4:3.0.0.RELEASE')
+
+    compile('org.webjars:bootstrap:3.3.7')
+    compile('org.webjars:font-awesome:4.7.0')
+    compile('org.webjars:webjars-locator')
+
+	runtime('com.h2database:h2')
+	runtime('org.postgresql:postgresql')
+    compile('org.liquibase:liquibase-core:3.5.0')
+    compile('org.hibernate:hibernate-java8')
+
+	compileOnly('org.projectlombok:lombok')
+
+	testCompile('org.springframework.boot:spring-boot-starter-test')
+    testCompile("org.springframework.security:spring-security-test")
+
+    integrationTestCompile('io.rest-assured:rest-assured:3.0.3')
+
+	runtime('org.springframework.boot:spring-boot-devtools')
+}
+
+test {
+    systemProperty("spring.profiles.active", project.properties.get("springTestProfile")?:'test')
+
+    testLogging {
+        showStandardStreams = false
+        events "passed", "skipped", "failed"
+    }
+}
+
+task integrationTest(type: Test) {
+    def profile = project.properties.get("springTestProfile") ?: 'it'
+    println "Integrationtest will use Spring profile ${profile}"
+    systemProperty("spring.profiles.active", profile)
+
+    testClassesDir = sourceSets.integrationTest.output.classesDir
+    classpath = sourceSets.integrationTest.runtimeClasspath
+//    outputs.upToDateWhen { false }
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+}
+
+defaultTasks 'build'

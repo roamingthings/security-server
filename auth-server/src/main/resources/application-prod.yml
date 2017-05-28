@@ -1,0 +1,16 @@
+spring:
+    devtools:
+        restart:
+            enabled: false
+        livereload:
+            enabled: false
+    datasource:
+        url: jdbc:postgresql://database:5432/expenses
+        username: postgres
+        password: postgres
+        driver-class-name: org.postgresql.Driver
+    jpa:
+        database: postgresql
+        show-sql: true
+        hibernate:
+            ddl-auto: update

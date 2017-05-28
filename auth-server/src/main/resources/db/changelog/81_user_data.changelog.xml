@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+       <changeSet id="81_01_insert_default_roles" author="asparkowsky">
+        <insert tableName="role">
+            <column name="uuid" value="d21a933f-2d6e-4254-ad05-64a96bb89960"/>
+            <column name="role" value="ROLE_ADMIN"/>
+        </insert>
+        <insert tableName="role">
+            <column name="uuid" value="990b667d-d87f-476a-a668-c6a6aa974b7b"/>
+            <column name="role" value="ROLE_USER"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="81_02_insert_default_users_account" author="asparkowsky" context="development">
+        <insert tableName="user_account">
+            <column name="uuid" value="6f6c241c-898c-4dff-b2b8-719ec8185e9d"/>
+            <column name="username" value="admin"/>
+            <!-- secret -->
+            <column name="password_digest" value="$2a$06$zNSPvDGbTVsiQ62h.ezSu.0Q0U4mXWn86q1wga7cdMslMf7gS8pDu"/>
+            <column name="enabled" value="true"/>
+        </insert>
+        <insert tableName="user_account">
+            <column name="uuid" value="7aa9080f-eb9a-4499-ae60-1876d97f8dc0"/>
+            <column name="username" value="user"/>
+            <!-- simple -->
+            <column name="password_digest" value="$2a$06$ft7ZMDJzgnaJ28EtvG1ZHO8lrTz7tY.iHaGT5iwbkwPAQGQsgGuNu"/>
+            <column name="enabled" value="true"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="81_03_insert_user_roles" author="asparkowsky" context="development">
+        <insert tableName="user_account_role">
+            <column name="user_account_uuid" value="6f6c241c-898c-4dff-b2b8-719ec8185e9d"/>
+            <column name="role_uuid" value="d21a933f-2d6e-4254-ad05-64a96bb89960"/>
+        </insert>
+        <insert tableName="user_account_role">
+            <column name="user_account_uuid" value="6f6c241c-898c-4dff-b2b8-719ec8185e9d"/>
+            <column name="role_uuid" value="990b667d-d87f-476a-a668-c6a6aa974b7b"/>
+        </insert>
+        <insert tableName="user_account_role">
+            <column name="user_account_uuid" value="7aa9080f-eb9a-4499-ae60-1876d97f8dc0"/>
+            <column name="role_uuid" value="990b667d-d87f-476a-a668-c6a6aa974b7b"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

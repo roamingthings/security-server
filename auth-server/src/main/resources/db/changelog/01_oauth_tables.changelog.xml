@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <changeSet id="01_01_create_table_oauth_client_details" author="asparkowsky">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="oauth_client_details"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="oauth_client_details">
+            <column name="client_id" type="VARCHAR(255)">
+                <constraints primaryKey="true" primaryKeyName="pk_oauth_client_details"/>
+            </column>
+            <column name="resource_ids" type="VARCHAR(255)"/>
+            <column name="client_secret" type="VARCHAR(255)"/>
+            <column name="scope" type="VARCHAR(255)"/>
+            <column name="authorized_grant_types" type="VARCHAR(255)"/>
+            <column name="web_server_redirect_uri" type="VARCHAR(255)"/>
+            <column name="authorities" type="VARCHAR(255)"/>
+            <column name="access_token_validity" type="INTEGER"/>
+            <column name="refresh_token_validity" type="INTEGER"/>
+            <column name="additional_information" type="VARCHAR(4096)"/>
+            <column name="autoapprove" type="VARCHAR(255)"/>
+        </createTable>
+
+        <rollback>
+            <dropTable tableName="oauth_client_details"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="01_02_create_table_oauth_client_token" author="asparkowsky">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="oauth_client_token"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="oauth_client_token">
+            <column name="token_id" type="VARCHAR(255)"/>
+            <column name="token" type="LONGVARBINARY"/>
+            <column name="authentication_id" type="VARCHAR(255)">
+                <constraints primaryKey="true" primaryKeyName="pk_oauth_client_token"/>
+            </column>
+            <column name="user_name" type="VARCHAR(255)"/>
+            <column name="client_id" type="VARCHAR(255)"/>
+        </createTable>
+
+        <rollback>
+            <dropTable tableName="oauth_client_token"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="01_03_create_table_oauth_access_token" author="asparkowsky">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="oauth_access_token"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="oauth_access_token">
+            <column name="token_id" type="VARCHAR(255)"/>
+            <column name="token" type="VARBINARY"/>
+            <column name="authentication_id" type="VARCHAR(255)">
+                <constraints primaryKey="true" primaryKeyName="pk_oauth_access_token"/>
+            </column>
+            <column name="user_name" type="VARCHAR(255)"/>
+            <column name="client_id" type="VARCHAR(255)"/>
+            <column name="authentication" type="LONGVARBINARY"/>
+            <column name="refresh_token" type="VARCHAR(255)"/>
+        </createTable>
+
+        <rollback>
+            <dropTable tableName="oauth_access_token"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="01_04_create_table_oauth_refresh_token" author="asparkowsky">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="oauth_refresh_token"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="oauth_refresh_token">
+            <column name="token_id" type="VARCHAR(255)"/>
+            <column name="token" type="LONGVARBINARY"/>
+            <column name="authentication" type="LONGVARBINARY"/>
+        </createTable>
+
+        <rollback>
+            <dropTable tableName="oauth_refresh_token"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="01_04_create_table_oauth_code" author="asparkowsky">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="oauth_code"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="oauth_code">
+            <column name="code" type="VARCHAR(255)"/>
+        </createTable>
+
+        <rollback>
+            <dropTable tableName="oauth_code"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="01_05_create_table_oauth_approvals" author="asparkowsky">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="oauth_approvals"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="oauth_approvals">
+            <column name="userId" type="VARCHAR(255)"/>
+            <column name="clientId" type="VARCHAR(255)"/>
+            <column name="scope" type="VARCHAR(255)"/>
+            <column name="status" type="VARCHAR(255)"/>
+            <column name="expiresAt" type="TIMESTAMP"/>
+            <column name="lastModifiedAt" type="TIMESTAMP"/>
+        </createTable>
+
+        <rollback>
+            <dropTable tableName="oauth_approval"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="01_05_create_table_ClientDetails" author="asparkowsky">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="ClientDetails"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="ClientDetails">
+            <column name="appId" type="VARCHAR(255)">
+                <constraints primaryKey="true" primaryKeyName="pk_client_details"/>
+            </column>
+            <column name="resourceIds" type="VARCHAR(255)" />
+            <column name="appSecret" type="VARCHAR(255)" />
+            <column name="scope" type="VARCHAR(255)" />
+            <column name="grantTypes" type="VARCHAR(255)" />
+            <column name="redirectUrl" type="VARCHAR(255)" />
+            <column name="authorities" type="VARCHAR(255)" />
+            <column name="access_token_validity" type="INTEGER" />
+            <column name="refresh_token_validity" type="INTEGER" />
+            <column name="additionalInformation" type="VARCHAR(4096)" />
+            <column name="autoApproveScopes" type="VARCHAR(255)" />
+        </createTable>
+
+        <rollback>
+            <dropTable tableName="ClientDetails"/>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

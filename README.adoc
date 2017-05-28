@@ -1,0 +1,10 @@
+Security Server
+===============
+
+While I've been tinkering around with Spring Security and all the nice things it offers I became very interested in this
+domain. Also I know there are a lot of good ready-to-use servers and services out there I wanted to have a field to
+experiment with the thing that Spring offers.
+
+I decided to start this project as an independent server which offers SSO authorization and user management for the other
+ services and clients I plan to build.
+

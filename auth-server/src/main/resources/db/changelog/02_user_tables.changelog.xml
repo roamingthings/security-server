@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <changeSet id="02_01_create_table_user_account" author="asparkowsky">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="user_account"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="user_account">
+            <column name="uuid" type="uuid">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="username" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password_digest" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="enabled" type="boolean"/>
+        </createTable>
+
+        <rollback>
+            <dropTable tableName="user_account"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="02_02_create_table_role" author="asparkowsky">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="role"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="role">
+            <column name="uuid" type="uuid">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="role" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <rollback>
+            <dropTable tableName="role"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="02_03_create_table_user_account_role" author="asparkowsky">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="user_account_role"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="user_account_role">
+            <column name="user_account_uuid" type="uuid">
+                <constraints foreignKeyName="fk_user_role_user_account" referencedTableName="user_account" referencedColumnNames="uuid" nullable="false"/>
+            </column>
+            <column name="role_uuid" type="uuid">
+                <constraints foreignKeyName="fk_user_role_role" referencedTableName="role" referencedColumnNames="uuid" nullable="false"/>
+            </column>
+        </createTable>
+        
+        <rollback>
+            <dropTable tableName="user_account_role"/>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

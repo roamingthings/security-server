@@ -1,0 +1,33 @@
+spring:
+    devtools:
+        restart:
+            enabled: true
+        livereload:
+            enabled: true
+    jackson:
+        serialization:
+          indent_output: true
+    datasource:
+        url: jdbc:h2:file:./build/db/auth-dev;DB_CLOSE_DELAY=-1
+        username: sa
+        password:
+        driver-class-name: org.h2.Driver
+        platform: h2
+    h2:
+        console:
+            enabled: true
+            path: /console
+    jpa:
+        database: H2
+        show-sql: true
+        hibernate:
+            ddl-auto: none
+    thymeleaf:
+        cache: false
+
+liquibase:
+  contexts: development
+
+logging.level.liquibase: DEBUG
+logging.level.org.hibernate.SQL: debug
+logging.level.org.hibernate.type.descriptor.sql: trace

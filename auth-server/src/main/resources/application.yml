@@ -1,0 +1,51 @@
+spring:
+  application:
+    name: auth-server
+  profiles:
+    active: dev
+  jpa:
+    hibernate:
+      ddl-auto: none
+  jackson:
+    serialization:
+      write_dates_as_timestamps: false
+server:
+  port: 8080
+security:
+  oauth2:
+    client:
+      client-id: acme
+      client-secret: acmesecret
+      scope: read,write
+      auto-approve-scopes: '.*'
+
+oauth:
+  accessToken:
+    expirationTimeInSeconds: 86400
+  refreshToken:
+    expirationTimeInSeconds: 2592000
+
+liquibase:
+  change-log: classpath:/db/changelog/db.changelog-master.xml
+
+#facebook:
+#  client:
+#    clientId: ${facebookClientId}
+#    clientSecret: ${facebookClientSecret}
+#    accessTokenUri: https://graph.facebook.com/oauth/access_token
+#    userAuthorizationUri: https://www.facebook.com/dialog/oauth
+#    tokenName: oauth_token
+#    authenticationScheme: query
+#    clientAuthenticationScheme: form
+#  resource:
+#    userInfoUri: https://graph.facebook.com/me
+#
+#github:
+#  client:
+#    clientId: ${githubClientId}
+#    clientSecret: ${githubClientSecret}
+#    accessTokenUri: https://github.com/login/oauth/access_token
+#    userAuthorizationUri: https://github.com/login/oauth/authorize
+#    clientAuthenticationScheme: form
+#  resource:
+#    userInfoUri: https://api.github.com/user

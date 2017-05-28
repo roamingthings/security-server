@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <changeSet id="03_01_create_table_revinfo" author="asparkowsky">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="REVINFO"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="REVINFO">
+            <column name="REV" type="integer" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="pk_rev"/>
+            </column>
+            <column name="REVTSTMP" type="BIGINT"/>
+        </createTable>
+
+        <rollback>
+            <dropTable tableName="REV"/>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

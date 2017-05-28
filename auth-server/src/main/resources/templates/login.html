@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default}">
+<head>
+
+    <title>Expense Tracker :: Login</title>
+
+    <th:block th:remove="all">
+        <!-- Bootstrap core CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+              integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+              crossorigin="anonymous"/>
+        <script src="https://use.fontawesome.com/c2480015ef.js"></script>
+        <link rel="stylesheet" href="/webjars/bootstrap/3.3.7/css/bootstrap.min.css"/>
+
+        <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+        <link href="../static/vendor/css/ie10-viewport-bug-workaround.css" rel="stylesheet"/>
+
+        <!-- Custom styles for this template -->
+        <link href="../static/assets/css/custom.css" rel="stylesheet"/>
+    </th:block>
+</head>
+
+<body>
+<div layout:fragment="content">
+    <div th:if="${param.error}">
+        Invalid username and password.
+    </div>
+    <div th:if="${param.logout}">
+        You have been logged out.
+    </div>
+
+    <div class="col-sm-3">
+        <form th:action="@{/login}" method="post">
+            <div class="form-group">
+                <label th:for="username">Username</label>
+                <input th:id="username" type="text" name="username" class="form-control"/>
+            </div>
+            <div class="form-group">
+                <label th:for="password">Password</label>
+                <input th:id="password" type="password" name="password" class="form-control"/>
+            </div>
+
+            <div><input type="submit" loginUri="Sign In" class="btn btn-primary"/></div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

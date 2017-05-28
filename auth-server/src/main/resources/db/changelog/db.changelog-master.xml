@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <include file="01_oauth_tables.changelog.xml" relativeToChangelogFile="true"/>
+    <include file="02_user_tables.changelog.xml" relativeToChangelogFile="true"/>
+    <include file="03_auditing_support_tables.changelog.xml" relativeToChangelogFile="true"/>
+    <include file="81_user_data.changelog.xml" relativeToChangelogFile="true"/>
+    <include file="91_client_data.changelog.xml" relativeToChangelogFile="true"/>
+
+</databaseChangeLog>
