@@ -9,8 +9,10 @@ spring:
   jackson:
     serialization:
       write_dates_as_timestamps: false
+
 server:
-  port: 8080
+  port: 8081
+
 security:
   oauth2:
     client:

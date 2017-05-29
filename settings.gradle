@@ -1,2 +1,2 @@
-include 'auth-server'
+include 'auth-server', 'usermanagement-server'
 includeBuild '../../commons/persistence-support'
