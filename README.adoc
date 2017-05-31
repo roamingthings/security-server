@@ -8,3 +8,11 @@ experiment with the thing that Spring offers.
 I decided to start this project as an independent server which offers SSO authorization and user management for the other
  services and clients I plan to build.
 
+Obtain a token
+--------------
+
+```
+$ curl -v POST -H 'Authorization: Basic Zm9vQ2xpZW50SWRQYXNzd29yZDpzZWNyZXQ=' 'http://localhost:8080/oauth/token' -d 'grant_type=password&username=user&password=simple' \
+```
+
+where `Zm9vQ2xpZW50SWRQYXNzd29yZDpzZWNyZXQ=` is the Base64 encoded 'fooClientIdPassword:secret' Basic Auth header
