@@ -1,4 +1,4 @@
-package de.roamingthings.auth.main.security;
+package de.roamingthings.auth.security;
 
 import de.roamingthings.auth.useraccount.domain.UserAccount;
 import de.roamingthings.auth.useraccount.service.UserService;
@@ -12,8 +12,7 @@ import org.springframework.stereotype.Service;
 /**
  * @author Alexander Sparkowsky [info@roamingthings.de]
  * @version 2017/05/07
- */
-@Service("userDetailsService")
+ */@Service("userDetailsService")
 public class SpringSecUserDetailsServiceImpl implements UserDetailsService {
     private final UserService userService;
     private final Converter<UserAccount, UserDetails> userUserDetailsConverter;

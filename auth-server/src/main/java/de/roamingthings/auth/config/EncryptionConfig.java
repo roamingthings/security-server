@@ -1,4 +1,4 @@
-package de.roamingthings.auth.main.config;
+package de.roamingthings.auth.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

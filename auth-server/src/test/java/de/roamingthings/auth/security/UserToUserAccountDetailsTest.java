@@ -1,4 +1,4 @@
-package de.roamingthings.auth.main.security;
+package de.roamingthings.auth.security;
 
 import de.roamingthings.auth.useraccount.domain.Role;
 import de.roamingthings.auth.useraccount.domain.UserAccount;

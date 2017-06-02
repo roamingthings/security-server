@@ -1,4 +1,4 @@
-package de.roamingthings.auth.main.security;
+package de.roamingthings.auth.security;
 
 import de.roamingthings.auth.useraccount.domain.UserAccount;
 import org.springframework.core.convert.converter.Converter;

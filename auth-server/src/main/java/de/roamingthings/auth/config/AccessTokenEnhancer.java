@@ -1,8 +1,8 @@
-package de.roamingthings.auth.main.config;
+package de.roamingthings.auth.config;
 
 import de.roamingthings.auth.useraccount.domain.UserAccount;
 import de.roamingthings.auth.useraccount.repository.UserAccountRepository;
-import de.roamingthings.auth.main.security.UserDetailsImpl;
+import de.roamingthings.auth.security.UserDetailsImpl;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;

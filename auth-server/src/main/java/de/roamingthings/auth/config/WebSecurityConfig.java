@@ -1,10 +1,9 @@
-package de.roamingthings.auth.main.config;
+package de.roamingthings.auth.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationEventPublisher;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -22,14 +21,13 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
  * @version 2017/04/29
  */
 @Configuration
-@EnableWebSecurity
+@EnableWebSecurity(debug = true)
+//@Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
+//@Order(Ordered.HIGHEST_PRECEDENCE)
+//@Order(-2)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private AuthenticationProvider authenticationProvider;
-
-
-    @Autowired
-    private AuthenticationEventPublisher applicationEventPublisher;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -50,10 +48,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-                .authorizeRequests()
+        http.requestMatchers().antMatchers("/login", "/oauth/**", "/user_account")
+            .and()
+//            .anonymous().disable()
+            .authorizeRequests()
                 .antMatchers("/login").permitAll()
-                .anyRequest().hasRole("USER")
+                .antMatchers("/oauth/**").permitAll()
+                .antMatchers("/user_account").hasRole("USER")
             .and()
                 .exceptionHandling()
                 .accessDeniedPage("/login?authorization_error=true")
@@ -70,8 +71,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin()
                 .loginProcessingUrl("/login")
                 .failureUrl("/login?authentication_error=true")
-                .loginPage("/login")
-            .and().headers().frameOptions().sameOrigin();
+                .loginPage("/login");
+//            .and().headers().frameOptions().sameOrigin();
 
 
 //        http
@@ -89,12 +90,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //            .and().csrf().ignoringAntMatchers("/console/**")
 //            .and().headers().frameOptions().sameOrigin();
     }
-
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(authProvider()).authenticationEventPublisher(applicationEventPublisher);
-    }
-
 
     @Bean
     public DaoAuthenticationProvider authProvider() {

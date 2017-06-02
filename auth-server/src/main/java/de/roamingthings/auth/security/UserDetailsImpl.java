@@ -1,4 +1,4 @@
-package de.roamingthings.auth.main.security;
+package de.roamingthings.auth.security;
 
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

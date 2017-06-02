@@ -1,7 +1,7 @@
 package de.roamingthings.auth.workbench;
 
 import de.roamingthings.SystemPropertyActiveProfileResolver;
-import de.roamingthings.auth.main.AuthServerApplication;
+import de.roamingthings.auth.AuthServerApplication;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

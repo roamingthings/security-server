@@ -1,4 +1,4 @@
-package de.roamingthings.auth.main.config;
+package de.roamingthings.auth.config;
 
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;

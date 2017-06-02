@@ -1,14 +1,16 @@
-package de.roamingthings.auth.main.config;
+package de.roamingthings.auth.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
+import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.token.*;
@@ -23,8 +25,8 @@ import java.util.Arrays;
  * @author Alexander Sparkowsky [info@roamingthings.de]
  * @version 2017/05/22
  */
-//@Configuration
-//@EnableAuthorizationServer
+@Configuration
+@EnableAuthorizationServer
 public class OAuth2AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
 
     @Autowired
@@ -47,10 +49,10 @@ public class OAuth2AuthorizationServerConfig extends AuthorizationServerConfigur
     private String tokenKeyStorePassword;
 
 
-    @Override
-    public void configure(AuthorizationServerSecurityConfigurer oauthServer) throws Exception {
-        oauthServer.tokenKeyAccess("permitAll()").checkTokenAccess("isAuthenticated()");
-    }
+//    @Override
+//    public void configure(AuthorizationServerSecurityConfigurer oauthServer) throws Exception {
+//        oauthServer.tokenKeyAccess("permitAll()").checkTokenAccess("isAuthenticated()");
+//    }
 
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
@@ -104,10 +106,17 @@ public class OAuth2AuthorizationServerConfig extends AuthorizationServerConfigur
     }
 */
 
+/*
+    @Bean
+    public TokenStore tokenStore() {
+    return new JwtTokenStore(accessTokenConverter());
+    }
+*/
+
     @Bean
     public TokenEnhancerChain tokenEnhancerChain() {
         final TokenEnhancerChain tokenEnhancerChain = new TokenEnhancerChain();
-        tokenEnhancerChain.setTokenEnhancers(Arrays.asList(accessTokenEnhancer, jwtTokenEnhancer()));
+        tokenEnhancerChain.setTokenEnhancers(Arrays.asList(tokenEnhancer(), jwtTokenEnhancer()));
         return tokenEnhancerChain;
     }
 
@@ -117,12 +126,6 @@ public class OAuth2AuthorizationServerConfig extends AuthorizationServerConfigur
 //		auth.jdbcAuthentication().dataSource(dataSource());
     // }
 
-    /*
-    @Bean
-    public TokenStore tokenStore() {
-    return new JwtTokenStore(accessTokenConverter());
-    }
-    */
 
     @Bean
     public TokenEnhancer tokenEnhancer() {
