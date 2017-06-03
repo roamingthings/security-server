@@ -1,7 +1,7 @@
 FROM java:8
 
 VOLUME /tmp
-ADD expenses-mono.jar app.jar
+ADD auth-server.jar app.jar
 RUN sh -c 'touch /app.jar'
 ENV JAVA_OPTS=""
 

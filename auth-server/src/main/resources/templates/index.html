@@ -4,7 +4,7 @@
       layout:decorate="~{layout/default}">
 <head>
 
-    <title>Expense Tracker :: Login</title>
+    <title>Auth Server</title>
 
     <th:block th:remove="all">
         <!-- Bootstrap core CSS -->
@@ -25,7 +25,8 @@
 <body>
 <div layout:fragment="content">
     <div class="col-sm-3">
-        <p>Welcome!</p>
+        <p>Welcome to the Auth Server!</p>
+        <a th:href="@{/login}">Login</a>
     </div>
 </div>
 </body>

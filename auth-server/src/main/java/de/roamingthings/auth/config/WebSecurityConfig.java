@@ -22,9 +22,6 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
  */
 @Configuration
 @EnableWebSecurity(debug = true)
-//@Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
-//@Order(Ordered.HIGHEST_PRECEDENCE)
-//@Order(-2)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private AuthenticationProvider authenticationProvider;
@@ -43,18 +40,38 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/webjars/**", "/images/**", "/vendor/**", "/assets/**");
+        web.ignoring().antMatchers(
+                "/webjars/**",
+                "/images/**",
+                "/vendor/**",
+                "/assets/**",
+                "/oauth/uncache_approvals",
+                "/oauth/cache_approvals",
+                "/oauth/token_key",
+                "/console/**"
+        );
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.requestMatchers().antMatchers("/login", "/oauth/**", "/user_account")
+        http
+                .requestMatchers()
+                .antMatchers("/", "/login", "/logout","/oauth/**","/user_account")
             .and()
-//            .anonymous().disable()
+                .anonymous()
+                .principal("anonymous")
+                .and()
             .authorizeRequests()
+                .antMatchers(
+                        "/user/register",
+                        "/password/reset",
+                        "/verify/account",
+                        "/verify/password/reset"
+                ).anonymous()
+                .antMatchers("/").permitAll()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/oauth/**").permitAll()
-                .antMatchers("/user_account").hasRole("USER")
+                .anyRequest().hasRole("USER")
             .and()
                 .exceptionHandling()
                 .accessDeniedPage("/login?authorization_error=true")
@@ -62,33 +79,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 // TODO: put CSRF protection back into this endpoint
                 .csrf()
                 .requireCsrfProtectionMatcher(new AntPathRequestMatcher("/oauth/authorize"))
-                .requireCsrfProtectionMatcher(new AntPathRequestMatcher("/console/**"))
                 .disable()
             .logout()
                 .logoutUrl("/logout")
-                .logoutSuccessUrl("/login")
+// If you want to allow logout using a GET request add the following line
+//                .logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET"))
+                .logoutSuccessUrl("/login?logout=true")
             .and()
                 .formLogin()
                 .loginProcessingUrl("/login")
                 .failureUrl("/login?authentication_error=true")
-                .loginPage("/login");
-//            .and().headers().frameOptions().sameOrigin();
+                .loginPage("/login")
+            .and().headers().frameOptions().sameOrigin();
 
-
-//        http
-//            .authorizeRequests()
-//                .antMatchers("/console/**").permitAll()
-//                .antMatchers("/webjars/**", "/assets/**", "/vendor/**").permitAll()
-//                .anyRequest().authenticated()
-//            .and()
-//                .formLogin()
-//                .loginPage("/login")
-//                .permitAll()
-//            .and()
-//                .logout()
-//                .permitAll()
-//            .and().csrf().ignoringAntMatchers("/console/**")
-//            .and().headers().frameOptions().sameOrigin();
     }
 
     @Bean

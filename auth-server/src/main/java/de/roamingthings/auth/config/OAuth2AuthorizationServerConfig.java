@@ -39,7 +39,7 @@ public class OAuth2AuthorizationServerConfig extends AuthorizationServerConfigur
     @Autowired
     private AccessTokenEnhancer accessTokenEnhancer;
 
-    @Value("${oauth.accessToken.expirationTimeInSeconds:86400}")
+    @Value("${oauth.accessToken.expirationTimeInSeconds:120}")
     private int accessTokenExpirationTimeInSeconds;
 
     @Value("${oauth.refreshToken.expirationTimeInSeconds:2592000}")
@@ -49,10 +49,10 @@ public class OAuth2AuthorizationServerConfig extends AuthorizationServerConfigur
     private String tokenKeyStorePassword;
 
 
-//    @Override
-//    public void configure(AuthorizationServerSecurityConfigurer oauthServer) throws Exception {
-//        oauthServer.tokenKeyAccess("permitAll()").checkTokenAccess("isAuthenticated()");
-//    }
+    @Override
+    public void configure(AuthorizationServerSecurityConfigurer oauthServer) throws Exception {
+        oauthServer.tokenKeyAccess("permitAll()").checkTokenAccess("isAuthenticated()");
+    }
 
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
@@ -87,6 +87,24 @@ public class OAuth2AuthorizationServerConfig extends AuthorizationServerConfigur
         return converter;
     }
 
+    @Bean
+    public TokenEnhancerChain tokenEnhancerChain() {
+        final TokenEnhancerChain tokenEnhancerChain = new TokenEnhancerChain();
+        tokenEnhancerChain.setTokenEnhancers(Arrays.asList(tokenEnhancer(), jwtTokenEnhancer()));
+        return tokenEnhancerChain;
+    }
+
+    @Bean
+    public TokenEnhancer tokenEnhancer() {
+        return accessTokenEnhancer;
+    }
+
+    @Bean
+    public TokenStore tokenStore() {
+        return new JdbcTokenStore(dataSource);
+    }
+
+    // Usage in service implementations that only want to check the token
 /*
     @Bean
     public JwtAccessTokenConverter accessTokenConverter() {
@@ -105,35 +123,4 @@ public class OAuth2AuthorizationServerConfig extends AuthorizationServerConfigur
         return converter;
     }
 */
-
-/*
-    @Bean
-    public TokenStore tokenStore() {
-    return new JwtTokenStore(accessTokenConverter());
-    }
-*/
-
-    @Bean
-    public TokenEnhancerChain tokenEnhancerChain() {
-        final TokenEnhancerChain tokenEnhancerChain = new TokenEnhancerChain();
-        tokenEnhancerChain.setTokenEnhancers(Arrays.asList(tokenEnhancer(), jwtTokenEnhancer()));
-        return tokenEnhancerChain;
-    }
-
-
-    // @Autowired
-    // public void init(AuthenticationManagerBuilder auth) throws Exception {
-//		auth.jdbcAuthentication().dataSource(dataSource());
-    // }
-
-
-    @Bean
-    public TokenEnhancer tokenEnhancer() {
-        return accessTokenEnhancer;
-    }
-
-    @Bean
-    public TokenStore tokenStore() {
-        return new JdbcTokenStore(dataSource);
-    }
 }

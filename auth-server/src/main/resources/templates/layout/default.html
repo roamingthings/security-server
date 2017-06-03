@@ -10,7 +10,7 @@
     <meta name="description" content=""/>
     <meta name="author" content=""/>
 
-    <title>Expense Tracker</title>
+    <title>Authentication Server</title>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 
@@ -48,17 +48,7 @@
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-sm-3 col-md-2 sidebar" sec:authorize="isAuthenticated()">
-            <ul class="nav nav-sidebar">
-                <li th:fragment="menuItem (path, active, title, glyph, text)" class="active" th:class="${active==menu ? 'active' : ''}">
-                    <a th:href="@{__${path}__}" th:title="${title}">
-                        <i th:class="'fa fa-'+${glyph}" class="fa fa-home" aria-hidden="true"></i>
-                        <span th:text="${text}">Template</span>
-                    </a>
-                </li>
-            </ul>
-        </div>
-        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <div class="col-md-10 col-md-offset-2 main">
             <div layout:fragment="content"/>
         </div>
     </div>

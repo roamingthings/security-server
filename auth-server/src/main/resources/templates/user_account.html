@@ -5,7 +5,7 @@
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
 
-    <title>Expense Tracker :: Login</title>
+    <title>User Account Details</title>
 
     <th:block th:remove="all">
         <!-- Bootstrap core CSS -->
@@ -25,14 +25,19 @@
 
 <body>
 <div layout:fragment="content">
-    <div class="col-sm-3">
-        <div>Logged user: <span sec:authentication="name">No Information</span></div>
-        <div>Roles: <span sec:authentication="principal.authorities">[ROLE_UNKNOWN]</span></div>
+    <div class="row">
+        <div class="col-sm-10 col-sm-offset-1">
+            <div>Logged user: <span sec:authentication="name">No Information</span></div>
+            <div>Roles: <span sec:authentication="principal.authorities">[ROLE_UNKNOWN]</span></div>
+        </div>
     </div>
 
-    <form th:action="@{/logout}" method="post">
-        <input type="submit" value="Sign Out"/>
-    </form>
+    <div class="row">
+        <div class="col-sm-10 col-sm-offset-1">
+        <form th:action="@{/logout}" method="post">
+            <input type="submit" value="Sign Out"/>
+        </form>
+    </div>
 
 </div>
 </body>

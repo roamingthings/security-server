@@ -15,7 +15,7 @@ import org.springframework.security.oauth2.provider.error.OAuth2AccessDeniedHand
 @Configuration
 @EnableResourceServer
 public class OAuth2ResourceServerConfig extends ResourceServerConfigurerAdapter {
-    private static final String RESOURCE_ID = "my_rest_api";
+    private static final String RESOURCE_ID = "auth_server_api";
 
     @Override
     public void configure(ResourceServerSecurityConfigurer resources) {
@@ -26,18 +26,16 @@ public class OAuth2ResourceServerConfig extends ResourceServerConfigurerAdapter 
     public void configure(HttpSecurity http) throws Exception {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
                 .and()
-//                .anonymous().disable()
-                .requestMatchers()
-                .antMatchers("/me")
-                .and()
+                .anonymous().disable()
                 .authorizeRequests()
                 .antMatchers("/me").hasRole("USER")
+                .anyRequest().denyAll()
                 .and().exceptionHandling().accessDeniedHandler(new OAuth2AccessDeniedHandler());
-//                .antMatchers("/user_account").hasRole("USER");
 
-//                .anyRequest().denyAll();
-//        http.requestMatchers().antMatchers("/me").and().authorizeRequests().antMatchers("/me").access("#oauth2.hasScope('read')");
-
+        /*
+         * Alternative matcher:
+         * .antMatchers("/me").access("#oauth2.hasScope('read')");
+         */
     }
 
 }
