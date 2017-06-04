@@ -24,13 +24,16 @@ public class OAuth2ResourceServerConfig extends ResourceServerConfigurerAdapter 
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
+        // @formatter:off
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
-                .and()
+            .and()
                 .anonymous().disable()
-                .authorizeRequests()
+            .authorizeRequests()
                 .antMatchers("/me").hasRole("USER")
                 .anyRequest().denyAll()
-                .and().exceptionHandling().accessDeniedHandler(new OAuth2AccessDeniedHandler());
+            .and()
+                .exceptionHandling().accessDeniedHandler(new OAuth2AccessDeniedHandler());
+        // @formatter:on
 
         /*
          * Alternative matcher:

@@ -7,7 +7,7 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd
         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
-    <changeSet id="91_01_insert_sample_clients" author="asparkowsky" context="development">
+    <changeSet id="91_01_insert_sample_clients_dev" author="asparkowsky" context="development">
         <insert tableName="oauth_client_details">
             <column name="client_id" value="fooClientIdPassword" />
             <column name="client_secret" value="secret" />
@@ -40,6 +40,18 @@
             <column name="refresh_token_validity" value="36000"/>
             <column name="additional_information" value="null"/>
             <column name="autoapprove" value="true"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="91_02_insert_sample_clients_it" author="asparkowsky" context="integration-test">
+        <insert tableName="oauth_client_details">
+            <column name="client_id" value="fullClient" />
+            <column name="client_secret" value="secret" />
+            <column name="scope" value="read,write,integration" />
+            <column name="authorized_grant_types" value="password,authorization_code,refresh_token,implicit" />
+            <column name="access_token_validity" value="60" />
+            <column name="refresh_token_validity" value="180" />
+            <column name="autoapprove" value="true" />
         </insert>
     </changeSet>
 

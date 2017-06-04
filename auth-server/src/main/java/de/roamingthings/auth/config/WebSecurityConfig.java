@@ -54,6 +54,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        // @formatter:off
         http
                 .requestMatchers()
                 .antMatchers("/", "/login", "/logout","/oauth/**","/user_account")
@@ -91,7 +92,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .failureUrl("/login?authentication_error=true")
                 .loginPage("/login")
             .and().headers().frameOptions().sameOrigin();
-
+        // @formatter:on
     }
 
     @Bean

@@ -11,6 +11,9 @@ spring:
         hibernate:
             ddl-auto: none
 
+liquibase:
+  contexts: integration-test
+
 logging.level.liquibase: INFO
 logging.level.org.hibernate.SQL: info
 logging.level.org.hibernate.type.descriptor.sql: info
