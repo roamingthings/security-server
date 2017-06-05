@@ -4,11 +4,11 @@ node("linux && jdk8") {
 
     dir('auth-server') {
         stage "Build/Analyse/Test"
-        sh "./gradlew clean build"
+        sh "../gradlew clean build"
         archiveUnitTestResults()
 
         stage "Integration Test"
-        sh "./gradlew integrationtest"
+        sh "../gradlew integrationtest"
     }
 }
 
