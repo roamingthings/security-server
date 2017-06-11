@@ -1,2 +1,6 @@
 include 'auth-server', 'usermanagement-server'
-includeBuild '../../commons/persistence-support'
+
+def persistenceSupportPath = "${rootProject.projectDir}/../../commons/persistence-support"
+if (new File(persistenceSupportPath).exists()) {
+    includeBuild persistenceSupportPath
+}
