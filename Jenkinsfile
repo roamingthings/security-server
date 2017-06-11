@@ -10,13 +10,13 @@ pipeline {
                 }
             }
         }
-    }
 
-    stage('Integration Test') {
-        steps {
-            dir('auth-server') {
-                sh "./gradlew -Dgradle.user.home=$HOME/.gradle integrationtest"
-                step([$class: "JUnitResultArchiver", testResults: "build/test-results/integrationTest/**/TEST-*.xml"])
+        stage('Integration Test') {
+            steps {
+                dir('auth-server') {
+                    sh "./gradlew -Dgradle.user.home=$HOME/.gradle integrationtest"
+                    step([$class: "JUnitResultArchiver", testResults: "build/test-results/integrationTest/**/TEST-*.xml"])
+                }
             }
         }
     }
