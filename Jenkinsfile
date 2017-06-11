@@ -1,17 +1,21 @@
-node("linux && jdk8") {
-    stage "Checkout"
-    git url: "https://github.com/roamingthings/security-server.git"
+pipeline {
+    agent any
 
     dir('auth-server') {
-        stage "Build/Analyse/Test"
-        sh "../gradlew clean build"
-        archiveUnitTestResults()
+        stages {
+            stage('Build & Unit Test') {
+                steps {
+                    sh "./gradlew -Dgradle.user.home=$HOME/.gradle clean build"
+                    step([$class: "JUnitResultArchiver", testResults: "build/test-results/test/**/TEST-*.xml"])
+                }
+            }
 
-        stage "Integration Test"
-        sh "../gradlew integrationtest"
+            stage('Integration Test') {
+                steps {
+                    sh "./gradlew -Dgradle.user.home=$HOME/.gradle integrationtest"
+                    step([$class: "JUnitResultArchiver", testResults: "build/test-results/integrationTest/**/TEST-*.xml"])
+                }
+            }
+        }
     }
-}
-
-def archiveUnitTestResults() {
-    step([$class: "JUnitResultArchiver", testResults: "build/**/TEST-*.xml"])
 }

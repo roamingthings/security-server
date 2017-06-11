@@ -26,14 +26,14 @@ ext["thymeleaf.version"] = "3.0.6.RELEASE"
 ext["thymeleaf-layout-dialect.version"] = "2.2.1"
 ext["docker.registry"] = 'localhost:5000'
 
-jar {
-    archiveName = 'auth-server.jar'
-}
-
 repositories {
-	mavenCentral()
+    mavenCentral()
     mavenLocal()
     maven { url "http://oss.sonatype.org/content/repositories/snapshots/" }
+}
+
+jar {
+    archiveName = 'auth-server.jar'
 }
 
 sourceSets {
@@ -62,7 +62,7 @@ configurations {
 }
 
 dependencies {
-    compile('de.roamingthings:persistence-support:0.0.1')
+    compile('de.roamingthings:persistence-support:1.0.0-SNAPSHOT')
 
     compile('org.springframework.boot:spring-boot-starter-web')
     compile("org.springframework.boot:spring-boot-starter-security")
