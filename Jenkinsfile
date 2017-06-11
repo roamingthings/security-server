@@ -5,7 +5,7 @@ pipeline {
         stage('Build & Unit Test') {
             steps {
                 dir('auth-server') {
-                    sh "./gradlew -Dgradle.user.home=$HOME/.gradle clean build"
+                    sh "../gradlew -Dgradle.user.home=$HOME/.gradle clean build"
                     step([$class: "JUnitResultArchiver", testResults: "build/test-results/test/**/TEST-*.xml"])
                 }
             }
@@ -14,7 +14,7 @@ pipeline {
         stage('Integration Test') {
             steps {
                 dir('auth-server') {
-                    sh "./gradlew -Dgradle.user.home=$HOME/.gradle integrationtest"
+                    sh "../gradlew -Dgradle.user.home=$HOME/.gradle integrationtest"
                     step([$class: "JUnitResultArchiver", testResults: "build/test-results/integrationTest/**/TEST-*.xml"])
                 }
             }
