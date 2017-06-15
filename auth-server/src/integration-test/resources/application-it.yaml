@@ -14,6 +14,7 @@ spring:
 liquibase:
   contexts: integration-test
 
+logging.level.root: DEBUG
 logging.level.liquibase: INFO
-logging.level.org.hibernate.SQL: info
-logging.level.org.hibernate.type.descriptor.sql: info
+logging.level.org.hibernate.SQL: INFO
+logging.level.org.hibernate.type.descriptor.sql: INFO
