@@ -5,7 +5,6 @@ import de.roamingthings.auth.AuthServerApplication;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.specification.RequestSpecification;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -41,7 +40,6 @@ public class OAuthTokenWorkbench {
     }
 
     @Test
-    @Ignore
     public void should_reject_token_request_for_unknown_client_id() throws Exception {
         // @formatter:off
         given().log().all()
