@@ -2,6 +2,7 @@ package de.roamingthings.auth.workbench;
 
 import de.roamingthings.SystemPropertyActiveProfileResolver;
 import de.roamingthings.auth.AuthServerApplication;
+import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import org.junit.Before;
@@ -42,6 +43,8 @@ public class OAuth2PasswordGrantIT {
     @Before
     public void setup() {
         baseURI = HOST + ":" + port;
+
+        RestAssured.reset();
     }
 
     @Test

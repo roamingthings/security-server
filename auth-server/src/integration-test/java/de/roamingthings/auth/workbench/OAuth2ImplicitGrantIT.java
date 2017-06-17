@@ -3,6 +3,7 @@ package de.roamingthings.auth.workbench;
 import de.roamingthings.SystemPropertyActiveProfileResolver;
 import de.roamingthings.auth.AuthServerApplication;
 import de.roamingthings.net.UrlQueryParser;
+import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
@@ -56,6 +57,8 @@ public class OAuth2ImplicitGrantIT {
     @Before
     public void setup() {
         baseURI = HOST + ":" + port;
+
+        RestAssured.reset();
     }
     
     @Test

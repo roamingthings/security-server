@@ -2,6 +2,7 @@ package de.roamingthings.auth.workbench;
 
 import de.roamingthings.SystemPropertyActiveProfileResolver;
 import de.roamingthings.auth.AuthServerApplication;
+import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.specification.RequestSpecification;
 import org.junit.Before;
@@ -40,6 +41,8 @@ public class OAuthTokenWorkbench {
     @Before
     public void setup() {
         baseURI = HOST + ":" + port;
+
+        RestAssured.reset();
     }
 
     @Test

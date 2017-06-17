@@ -3,6 +3,7 @@ package de.roamingthings.auth.workbench;
 import de.roamingthings.SystemPropertyActiveProfileResolver;
 import de.roamingthings.auth.AuthServerApplication;
 import de.roamingthings.net.UrlQueryParser;
+import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import org.hamcrest.CoreMatchers;
@@ -54,6 +55,8 @@ public class OAuth2CodeGrantIT {
     @Before
     public void setup() {
         baseURI = HOST + ":" + port;
+
+        RestAssured.reset();
     }
 
     @Test
@@ -86,6 +89,43 @@ public class OAuth2CodeGrantIT {
         assertThat(access_token, notNullValue());
     }
 
+    private ExtractableResponse<Response> requestAuthorizationWithExpectedRedirectLocation(String expectedRedirectUri, String responseType) throws Exception {
+        return requestAuthorizationWithExpectedRedirectLocation(null, expectedRedirectUri, responseType);
+    }
+
+    private ExtractableResponse<Response> requestAuthorizationWithExpectedRedirectLocation(String jSessionId, String expectedRedirectUri, String responseType) throws Exception {
+        // @formatter:off
+        final ExtractableResponse<Response> redirectedResponse =
+            given().log().all()
+            .auth()
+                .basic("fullClient", "secret")
+            .and()
+                .contentType("application/x-www-form-urlencoded; charset=utf-8")
+            .when()
+                .redirects().follow(false)
+                .cookie("JSESSIONID", jSessionId)
+                .queryParam("client_id", clientId)
+                .queryParam("scope", scope)
+                .queryParam("redirect_uri", redirectUri)
+                .queryParam("state", state)
+                .queryParam("response_type", responseType)
+                .get(baseURI + "/oauth/authorize").prettyPeek()
+            .then()
+                .statusCode(302)
+            .and()
+                .extract();
+        // @formatter:on
+
+        final String redirectUri = getLocationFromResponse(redirectedResponse);
+        assertThat(redirectUri, containsString(expectedRedirectUri));
+
+        return redirectedResponse;
+    }
+
+
+
+
+
     private String getAuthorizationCodeFromUri(String uri) throws MalformedURLException {
         final URL tokenUrl = new URL(uri);
         final Map<String, List<String>> parameters = UrlQueryParser.extractParametersFromUrl(tokenUrl);
@@ -117,39 +157,6 @@ public class OAuth2CodeGrantIT {
             .and()
                 .extract();
         // @formatter:on
-    }
-
-    private ExtractableResponse<Response> requestAuthorizationWithExpectedRedirectLocation(String expectedRedirectUri, String responseType) {
-        return requestAuthorizationWithExpectedRedirectLocation(null, expectedRedirectUri, responseType);
-    }
-
-    private ExtractableResponse<Response> requestAuthorizationWithExpectedRedirectLocation(String jSessionId, String expectedRedirectUri, String responseType) {
-        // @formatter:off
-        final ExtractableResponse<Response> redirectedResponse =
-            given().log().all()
-            .auth()
-                .basic("fullClient", "secret")
-            .and()
-                .contentType("application/x-www-form-urlencoded; charset=utf-8")
-            .when()
-                .redirects().follow(false)
-                .cookie("JSESSIONID", jSessionId)
-                .queryParam("client_id", clientId)
-                .queryParam("scope", scope)
-                .queryParam("redirect_uri", redirectUri)
-                .queryParam("state", state)
-                .queryParam("response_type", responseType)
-                .get(baseURI + "/oauth/authorize").prettyPeek()
-            .then()
-                .statusCode(302)
-            .and()
-                .extract();
-        // @formatter:on
-
-        final String redirectUri = getLocationFromResponse(redirectedResponse);
-        assertThat(redirectUri, containsString(expectedRedirectUri));
-
-        return redirectedResponse;
     }
 
     private String retrieveTokenFromOAuth2Endpoint(String grantRequestBody, String expectedScope) {
